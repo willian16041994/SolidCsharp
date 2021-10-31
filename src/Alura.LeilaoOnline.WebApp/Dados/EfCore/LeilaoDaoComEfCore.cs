@@ -1,15 +1,14 @@
 ﻿using Alura.LeilaoOnline.WebApp.Models;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace Alura.LeilaoOnline.WebApp.Dados
+namespace Alura.LeilaoOnline.WebApp.Dados.EfCore
 {
-    public class LeilaoDAO
+    public class LeilaoDaoComEfCore : ILeilaoDao
     {
         private AppDbContext ctx;
-        public LeilaoDAO()
+        public LeilaoDaoComEfCore()
         {
             ctx = new AppDbContext();
         }
@@ -26,11 +25,13 @@ namespace Alura.LeilaoOnline.WebApp.Dados
             ctx.SaveChanges();
         }
 
-        public void Excluir (Leilao leilao)
+        public void Excluir(Leilao leilao)
         {
             ctx.Leiloes.Remove(leilao);
             ctx.SaveChanges();
         }
+
+        public IEnumerable<Leilao> ListarLeiloes() => ctx.Leiloes.Include(l => l.Categoria);
 
         public IEnumerable<Categoria> ListarCategorias()
         {
