@@ -33,14 +33,19 @@ namespace Alura.LeilaoOnline.WebApp.Dados.EfCore
 
         public IEnumerable<Leilao> ListarLeiloes() => ctx.Leiloes.Include(l => l.Categoria);
 
-        public IEnumerable<Categoria> ListarCategorias()
+        public IEnumerable<Categoria> BuscarTodos()
         {
             return ctx.Categorias.ToList();
         }
 
-        public Leilao BuscarLeilaoId(int id)
+        public Leilao BuscarPorId(int id)
         {
             return ctx.Leiloes.Find(id);
+        }
+
+        IEnumerable<Leilao> IQuery<Leilao>.BuscarTodos()
+        {
+            return ctx.Leiloes.Include(l => l.Categoria);
         }
     }
 }
